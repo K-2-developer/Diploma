@@ -18,7 +18,7 @@ class Hotel(models.Model):
 class HotelPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)
     hotel_id = models.ForeignKey(Hotel, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='hotel_photos')
+    photo = models.ImageField(upload_to='hotel_photos',null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -39,5 +39,5 @@ class Room(models.Model):
 class RoomPhoto(models.Model):
     photo_id = models.AutoField(primary_key=True)
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
-    room_photo = models.ImageField(upload_to='room_photos')
+    room_photo = models.ImageField(upload_to='room_photos',null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
