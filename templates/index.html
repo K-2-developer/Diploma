@@ -9,6 +9,10 @@
      {% if hotels.count > 0 %}
          {% for hotel in hotels %}
              <p>{{ hotel.hotel_name }}</p>
+             <p>{{ hotel.hotel_location }}</p>
+               <img src="{{ hotel.hotel_photos.url }}" alt="{{ hotel.hotel_name }}" width="300">
+            <button>Description</button>
+
          {% endfor %}
      {% endif %}
 </body>
