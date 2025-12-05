@@ -5,11 +5,13 @@ class Hotel(models.Model):
     hotel_id = models.AutoField(primary_key=True)
     hotel_name = models.TextField(max_length=100)
     hotel_location = models.TextField(max_length=100)
+    hotel_description = models.TextField(max_length=500,null=True, blank=True)
     hotel_photos = models.ImageField(upload_to='hotel_photos')
     hotel_rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField()
+
 
     def __str__(self):
         return self.hotel_name
