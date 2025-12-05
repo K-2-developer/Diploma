@@ -26,6 +26,7 @@ from Hotel import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path("hotel/<int:hotel_id>/", views.hotel_info, name="hotel_info")
 ]
 
 if settings.DEBUG:

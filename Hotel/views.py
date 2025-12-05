@@ -9,10 +9,9 @@ def index(request):
     return render(request, 'index.html', {'hotels': hotels})
 
 def hotel_info(request, hotel_id):
-    hotel = Hotel.objects.get(id=hotel_id)
-    rooms = Room.objects.filter(hotel=hotel)
-    return render (request, 'hotel_info', {'hotel': hotel, 'rooms': rooms})
-
+    hotel = Hotel.objects.get(hotel_id=hotel_id)
+    rooms = Room.objects.filter(hotel_id=hotel)
+    return render(request, 'hotel_info.html', {'hotel': hotel, 'rooms': rooms})
 
 
 

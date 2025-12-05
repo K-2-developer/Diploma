@@ -11,7 +11,9 @@
              <p>{{ hotel.hotel_name }}</p>
              <p>{{ hotel.hotel_location }}</p>
                <img src="{{ hotel.hotel_photos.url }}" alt="{{ hotel.hotel_name }}" width="300">
-            <button>Description</button>
+    <a href="{% url 'hotel_info' hotel.hotel_id %}">
+        <button>Description</button>
+    </a>
 
          {% endfor %}
      {% endif %}
