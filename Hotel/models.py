@@ -27,6 +27,7 @@ class HotelPhoto(models.Model):
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     hotel_id = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    type = models.CharField(max_length=100, default='standart',blank=True)
     room_price = models.IntegerField()
     available = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)

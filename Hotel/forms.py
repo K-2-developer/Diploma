@@ -1,10 +1,9 @@
 from django import forms
-from .models import Hotel, HotelPhoto, Room, RoomPhoto
+from .models import Booking
 
 
-class CreateHotel(forms.Form):
+class BookingForm(forms.ModelForm):
     class Meta:
-        model = Hotel
-        fields = ('hotel_name','hotel_location')
-
+        model = Booking
+        fields = ['room_id','check_in','check_out']
 
