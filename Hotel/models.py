@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Hotel(models.Model):
@@ -10,7 +11,8 @@ class Hotel(models.Model):
     hotel_rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField()
+    deleted_at = models.DateTimeField(null=True, blank=True)
+
 
 
     def __str__(self):
@@ -29,10 +31,11 @@ class Room(models.Model):
     hotel_id = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     room_photos = models.ImageField(upload_to='room_photos')
     room_price = models.IntegerField()
-    available = models.CharField(max_length=10)
+    available = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField()
+    deleted_at = models.DateTimeField(null=True, blank=True)
+
 
     def __str__(self):
         return self.room_id
