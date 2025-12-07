@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -43,3 +44,5 @@ class RoomPhoto(models.Model):
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
     room_photo = models.ImageField(upload_to='room_photos',null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
