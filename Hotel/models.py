@@ -50,11 +50,11 @@ class Booking(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
     check_in = models.DateField()
-    chck_out = models.DateField()
+    check_out = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
     deleted = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.booking_id
+        return f'Booking:{self.booking_id}'
