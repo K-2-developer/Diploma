@@ -7,7 +7,6 @@ class Hotel(models.Model):
     hotel_name = models.TextField(max_length=100)
     hotel_location = models.TextField(max_length=100)
     hotel_description = models.TextField(max_length=500,null=True, blank=True)
-    hotel_photos = models.ImageField(upload_to='hotel_photos')
     hotel_rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -28,15 +27,14 @@ class HotelPhoto(models.Model):
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     hotel_id = models.ForeignKey(Hotel, on_delete=models.CASCADE)
-    room_photos = models.ImageField(upload_to='room_photos')
     room_price = models.IntegerField()
-    available = models.CharField(max_length=10)
+    available = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return self.room_id
+        return f'Room {self.room_id} in {self.hotel_id.hotel_name}'
 
 
 class RoomPhoto(models.Model):
