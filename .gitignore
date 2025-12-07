@@ -7,3 +7,5 @@ Hotel/migrations/__pycache__
 Diploma/settings.py
 media/.DS_Store
 .DS_Store
+users/__pycache__
+users/migrations/__pycache__
