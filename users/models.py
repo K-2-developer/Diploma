@@ -1,12 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 
-class User(models.Model):
+class User(AbstractBaseUser,PermissionsMixin):
     user_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=100)
     email = models.EmailField()
     password = models.CharField(max_length=100)
-    # booking добавить через class Booking и внешний ключ
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
