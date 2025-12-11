@@ -1,7 +1,7 @@
 from urllib import request
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import ReviewForm
-from .models import Hotel
+from .models import Hotel, Review
 
 
 def review(request,hotel_id):
@@ -13,8 +13,10 @@ def review(request,hotel_id):
             review.user = request.user
             review.hotel = hotel
             review.save()
-            return render('hotel_info.html') #redirect?
+            return redirect('hotel_info', pk=hotel.id) #redirect?
     else:
         form = ReviewForm()
-        return render(request, 'hotel_info.html', {'form': form})
+        return render(request, 'hotel_info.html', {'form': form,
+                                                   'hotel': hotel,
+                                                   'reviews': hotel.review.all()})
 
