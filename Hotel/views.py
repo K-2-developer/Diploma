@@ -1,7 +1,11 @@
 from django import http
 from django.shortcuts import render, get_object_or_404,redirect
+from rest_framework import serializers
+from rest_framework.generics import ListAPIView
+
 from Hotel.forms import BookingForm
 from Hotel.models import Hotel, Room
+from Hotel.serializers import HotelSerializer
 
 
 def index(request):
@@ -26,3 +30,8 @@ def booking(request,room_id):
             booking.save()
             return render(request, 'booking_succeed.html') #Подумать над добавлением redirect вместо render!
     return render(request, 'booking.html', {'form': form, 'room': room})
+
+
+class HotelAPIView(ListAPIView):
+    queryset = Hotel.objects.all()
+    serializer_class = HotelSerializer

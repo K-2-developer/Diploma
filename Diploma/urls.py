@@ -22,11 +22,13 @@ from django.contrib import admin
 from django.urls import path
 
 from Hotel import views
+from Hotel.views import HotelAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path("hotel/<int:hotel_id>/", views.hotel_info, name="hotel_info")
+    path("hotel/<int:hotel_id>/", views.hotel_info, name="hotel_info"),
+    path('api/v1/hotels/', HotelAPIView.as_view()),
 ]
 
 if settings.DEBUG:
