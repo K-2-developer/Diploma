@@ -51,6 +51,11 @@ class RoomInfoAPIView(RetrieveAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
+
 class BookingAPIView(ListAPIView):
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+
+class BookingInfoAPIView(RetrieveAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
