@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from Hotel.models import Hotel
 
 
 class Review(models.Model):
@@ -7,6 +8,7 @@ class Review(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField()
     rating = models.IntegerField()
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True)
