@@ -10,8 +10,10 @@
          {% for hotel in hotels %}
              <p>{{ hotel.hotel_name }}</p>
              <p>{{ hotel.hotel_location }}</p>
-               <img src="{{ hotel.hotel_photos.url }}" alt="{{ hotel.hotel_name }}" width="300">
+             {% for photo in hotel.hotelphoto_set.all %}
+               <img src="{{ photo.photo.url }}" alt="{{ hotel.hotel_name }}" width="300">
     <a href="{% url 'hotel_info' hotel.hotel_id %}">
+        {% endfor %}
         <button>Description</button>
     </a>
 
