@@ -43,3 +43,7 @@ class HotelInfoAPIView(RetrieveAPIView):
 class RoomAPIView(ListAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
+
+class RoomInfoAPIView(RetrieveAPIView):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
