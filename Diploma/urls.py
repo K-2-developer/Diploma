@@ -20,15 +20,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-
 from Hotel import views
-from Hotel.views import HotelAPIView
+from Hotel.views import HotelAPIView, HotelInfoAPIView, RoomAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path("hotel/<int:hotel_id>/", views.hotel_info, name="hotel_info"),
     path('api/v1/hotels/', HotelAPIView.as_view()),
+    path('api/v1/hotels/<int:pk>/', HotelInfoAPIView.as_view()),
+    path('api/v1/rooms/', RoomAPIView.as_view()),
 ]
 
 if settings.DEBUG:

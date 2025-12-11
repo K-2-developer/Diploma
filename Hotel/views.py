@@ -1,11 +1,11 @@
 from django import http
 from django.shortcuts import render, get_object_or_404,redirect
 from rest_framework import serializers
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from Hotel.forms import BookingForm
 from Hotel.models import Hotel, Room
-from Hotel.serializers import HotelSerializer
+from Hotel.serializers import HotelSerializer, RoomSerializer
 
 
 def index(request):
@@ -35,3 +35,11 @@ def booking(request,room_id):
 class HotelAPIView(ListAPIView):
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
+
+class HotelInfoAPIView(RetrieveAPIView):
+    queryset = Hotel.objects.all()
+    serializer_class = HotelSerializer
+
+class RoomAPIView(ListAPIView):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
