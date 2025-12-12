@@ -22,7 +22,8 @@ from django.contrib import admin
 from django.urls import path
 from Hotel import views
 from Hotel.views import HotelAPIView, HotelInfoAPIView, RoomAPIView, RoomInfoAPIView, BookingAPIView, BookingInfoAPIView
-from users.views import review
+from users.views import review, register
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +31,7 @@ urlpatterns = [
     path('hotel/<int:hotel_id>/', views.hotel_info, name="hotel_info"),
     path('hotel/<int:hotel_id>/review', review, name="review"),
     path('booking/', views.booking, name="booking"),
+    path('registration/',register, name='registration'),
 
 
 
