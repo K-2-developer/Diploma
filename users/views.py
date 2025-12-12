@@ -1,6 +1,6 @@
 from urllib import request
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import ReviewForm
+from .forms import ReviewForm, RegistrationForm
 from .models import Hotel, Review
 
 
@@ -21,3 +21,14 @@ def review(request,hotel_id):
             'hotel': hotel,
             'reviews': hotel.reviews.all()
         })
+
+
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('login')
+    else:
+        form = RegistrationForm()
+    return render(request, 'register.html', {'form': form})
