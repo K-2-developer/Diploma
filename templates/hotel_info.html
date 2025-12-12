@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Hotel information</title>
-</head>
-<body>
-    {{ hotel.hotel_name }}
+<h2>{{ hotel.hotel_name }}</h2>
 
-    <a href="{% url 'index' %}">main page
-    </a>
-</body>
-</html>
+<h3>Отзывы:</h3>
+{% for review in reviews %}
+  <p><strong>{{ review.user.username }}</strong> (оценка: {{ review.rating }}/5)</p>
+  <p>{{ review.comment }}</p>
+  <hr>
+{% empty %}
+  <p>Отзывов пока нет.</p>
+{% endfor %}
+
+<h3>Оставить отзыв:</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Отправить</button>
+</form>

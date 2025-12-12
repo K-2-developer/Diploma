@@ -5,7 +5,7 @@ from .models import Hotel, Review
 
 
 def review(request,hotel_id):
-    hotel = get_object_or_404(Hotel, pk=hotel_id)
+    hotel = get_object_or_404(Hotel, hotel_id=hotel_id)
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -13,10 +13,11 @@ def review(request,hotel_id):
             review.user = request.user
             review.hotel = hotel
             review.save()
-            return redirect('hotel_info', pk=hotel.id) #redirect?
+            return redirect('hotel_info', hotel_id=hotel.hotel_id)
     else:
         form = ReviewForm()
-        return render(request, 'hotel_info.html', {'form': form,
-                                                   'hotel': hotel,
-                                                   'reviews': hotel.review.all()})
-
+        return render(request, 'hotel_info.html', {
+            'form': form,
+            'hotel': hotel,
+            'reviews': hotel.reviews.all()
+        })
