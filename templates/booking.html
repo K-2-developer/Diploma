@@ -1,10 +1,23 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TEST</title>
+    <title>Booking Room {{ room.room_id }}</title>
+    <link rel="stylesheet" href="{% static 'css/booking.css' %}">
 </head>
 <body>
+<div class="container">
+    <h2 class="title">Booking for {{ room.type }} — ${{ room.room_price }}</h2>
 
+    <form method="post" class="form-box">
+        {% csrf_token %}
+        {{ form.room_id.label_tag }} {{ form.room_id }}
+        {{ form.check_in.label_tag }} {{ form.check_in }}
+        {{ form.check_out.label_tag }} {{ form.check_out }}
+
+        <button type="submit" class="btn btn-primary">Continue booking</button>
+    </form>
+</div>
 </body>
 </html>

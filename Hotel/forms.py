@@ -6,7 +6,7 @@ from .models import Booking
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = ['room_id', 'check_in', 'check_out']
+        fields = ['check_in', 'check_out']
 
 
     def clean(self):

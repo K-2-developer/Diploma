@@ -1,10 +1,24 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Booking Confirmed</title>
+    <link rel="stylesheet" href="{% static 'css/booking.css' %}">
 </head>
 <body>
+<div class="container">
+    <h2 class="title">Your booking is confirmed</h2>
 
+    <div class="card">
+        {% if messages %}
+            {% for message in messages %}
+                <p class="success-text">{{ message }}</p>
+            {% endfor %}
+        {% else %}
+            <p class="success-text">Total price: ${{ total_price }}</p>
+        {% endif %}
+    </div>
+</div>
 </body>
 </html>

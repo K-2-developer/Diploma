@@ -1,4 +1,5 @@
 from django import http
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import serializers
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -6,7 +7,8 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from Hotel.forms import BookingForm
 from Hotel.models import Hotel, Room, Booking
 from Hotel.serializers import HotelSerializer, RoomSerializer, BookingSerializer
-
+from users.models import Review
+from django.contrib import messages
 
 def index(request):
     hotels = Hotel.objects.all()
@@ -14,11 +16,12 @@ def index(request):
 
 
 def hotel_info(request, hotel_id):
-    hotel = Hotel.objects.get(hotel_id=hotel_id)
+    hotel = get_object_or_404(Hotel, pk=hotel_id)
     rooms = Room.objects.filter(hotel_id=hotel)
+    reviews = Review.objects.filter(hotel=hotel)
     return render(request, 'hotel_info.html', {'hotel': hotel, 'rooms': rooms})
 
-
+@login_required
 def booking(request, room_id):
     room = get_object_or_404(Room, pk=room_id)
     if request.method == 'POST':
@@ -28,8 +31,18 @@ def booking(request, room_id):
             booking.user_id = request.user
             booking.room_id = room
             booking.save()
-            return render(request, 'booking_succeed.html')  # Подумать над добавлением redirect вместо render!
+            days = (booking.check_out - booking.check_in).days
+            total_price = days * room.room_price
+            messages.success(request, f'Total price: ${total_price}')
+            return redirect('booking_succeed')
+
+    else:
+        form = BookingForm()
     return render(request, 'booking.html', {'form': form, 'room': room})
+
+@login_required
+def booking_succeed(request):
+    return render(request, 'booking_succeed.html')
 
 
 class HotelAPIView(ListAPIView):

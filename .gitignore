@@ -4,7 +4,6 @@ Diploma/__pycache__
 .idea
 Hotel/__pycache__
 Hotel/migrations/__pycache__
-Diploma/settings.py
 media/.DS_Store
 .DS_Store
 users/__pycache__

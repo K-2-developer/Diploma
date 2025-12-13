@@ -1,17 +1,67 @@
-<h2>{{ hotel.hotel_name }}</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ hotel.hotel_name }}</title>
+    <link rel="stylesheet" href="{% static 'css/hotel_info.css' %}">
+</head>
+<body>
+<div class="container">
+    <h2 class="title">{{ hotel.hotel_name }}</h2>
 
-<h3>Отзывы:</h3>
-{% for review in reviews %}
-  <p><strong>{{ review.user.username }}</strong> (оценка: {{ review.rating }}/5)</p>
-  <p>{{ review.comment }}</p>
-  <hr>
-{% empty %}
-  <p>Отзывов пока нет.</p>
-{% endfor %}
 
-<h3>Оставить отзыв:</h3>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Отправить</button>
-</form>
+    <div class="hotel-photos">
+        {% for photo in hotel.hotelphoto_set.all %}
+            {% if photo.photo %}
+                <img src="{{ photo.photo.url }}" alt="{{ hotel.hotel_name }}" class="hotel-img">
+            {% endif %}
+        {% empty %}
+            <p class="empty">No hotel photos available.</p>
+        {% endfor %}
+    </div>
+
+
+    <h3 class="subtitle">Rooms:</h3>
+    <div class="rooms">
+        {% for room in rooms %}
+        <div class="room-card">
+            <p class="room-title">{{ room.type }} — ${{ room.room_price }}</p>
+            <p class="room-status">
+                {% if room.available %}Available{% else %}Not available{% endif %}
+            </p>
+            <div class="room-photos">
+                {% for photo in room.roomphoto_set.all %}
+                    {% if photo.room_photo %}
+                        <img src="{{ photo.room_photo.url }}" alt="Room {{ room.room_id }}" class="room-img">
+                    {% endif %}
+                {% empty %}
+                    <p class="empty">No photos for this room.</p>
+                {% endfor %}
+            </div>
+
+
+            {% if request.user.is_authenticated and room.available %}
+                <a href="{% url 'booking' room.room_id %}" class="btn btn-primary">Book this room</a>
+            {% elif not request.user.is_authenticated %}
+                <p class="empty">Login to book this room</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <h3 class="subtitle">Reviews:</h3>
+    <div class="reviews">
+        {% for review in reviews %}
+        <div class="review-card">
+            <p class="review-user"><strong>{{ review.user.username }}</strong> — оценка: {{ review.rating }}/5</p>
+            <p class="review-comment">{{ review.comment }}</p>
+        </div>
+        {% empty %}
+        <p class="empty">No reviews yet.</p>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
