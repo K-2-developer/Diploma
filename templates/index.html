@@ -8,9 +8,22 @@
 </head>
 <body>
     <header class="topbar">
-        <h1>Hotels</h1>
+    <h1>Hotels</h1>
+
+    {% if request.user.is_authenticated %}
+    <div class="user-info">
+        <span>Welcome, <strong>{{ request.user.username }}</strong></span>
+        <a href="{% url 'profile' %}" class="btn-profile">Profile</a>
+        <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+    </div>
+{% else %}
+    <div class="auth-buttons">
         <a href="{% url 'login' %}" class="btn-login">Login</a>
-    </header>
+        <a href="{% url 'registration' %}" class="btn-register">Register</a>
+    </div>
+{% endif %}
+
+</header>
 
     {% if hotels.count > 0 %}
         {% for hotel in hotels %}

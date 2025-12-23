@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import ReviewForm, RegistrationForm
 from .models import Hotel
 from Hotel.models import Booking
+from django.contrib.auth import logout
 
 
 def review(request,hotel_id):
@@ -41,3 +42,7 @@ def profile(request):
     user = request.user
     booking = Booking.objects.filter(user_id=user)
     return render(request, 'profile.html', {'user': user, 'booking': booking})
+
+def user_logout(request):
+    logout(request)
+    return redirect('index')

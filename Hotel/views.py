@@ -10,6 +10,7 @@ from Hotel.serializers import HotelSerializer, RoomSerializer, BookingSerializer
 from users.models import Review
 from django.contrib import messages
 
+
 def index(request):
     hotels = Hotel.objects.all()
     return render(request, 'index.html', {'hotels': hotels})
@@ -20,6 +21,7 @@ def hotel_info(request, hotel_id):
     rooms = Room.objects.filter(hotel_id=hotel)
     reviews = Review.objects.filter(hotel=hotel)
     return render(request, 'hotel_info.html', {'hotel': hotel, 'rooms': rooms})
+
 
 @login_required
 def booking(request, room_id):
@@ -39,6 +41,7 @@ def booking(request, room_id):
     else:
         form = BookingForm()
     return render(request, 'booking.html', {'form': form, 'room': room})
+
 
 @login_required
 def booking_succeed(request):
@@ -68,6 +71,7 @@ class RoomInfoAPIView(RetrieveAPIView):
 class BookingAPIView(ListAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
+
 
 class BookingInfoAPIView(RetrieveAPIView):
     queryset = Booking.objects.all()

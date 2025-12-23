@@ -10,7 +10,9 @@
 <div class="container">
     <h2 class="title">{{ hotel.hotel_name }}</h2>
 
-
+    <div class="hotel-description">
+        <p>{{ hotel.hotel_description }}</p>
+    </div>
     <div class="hotel-photos">
         {% for photo in hotel.hotelphoto_set.all %}
             {% if photo.photo %}

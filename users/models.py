@@ -16,4 +16,4 @@ class Review(models.Model):
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.review_id} by {self.user_id.username}'
+        return f'{self.review_id} by {self.user.username}'

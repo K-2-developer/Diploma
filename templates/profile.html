@@ -26,8 +26,8 @@
     <div class="card">
         <h3 class="section-title">My Bookings</h3>
 
-        {% if bookings %}
-            {% for booking in bookings %}
+        {% if booking %}
+            {% for booking in booking %}
                 <div class="sub-card">
                     <p><strong>Hotel:</strong> {{ booking.room_id.hotel_id.hotel_name }}</p>
                     <p><strong>Room:</strong> {{ booking.room_id.type }}</p>

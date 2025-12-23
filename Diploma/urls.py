@@ -22,7 +22,7 @@ from django.contrib import admin
 from django.urls import path
 from Hotel import views
 from Hotel.views import HotelAPIView, HotelInfoAPIView, RoomAPIView, RoomInfoAPIView, BookingAPIView, BookingInfoAPIView
-from users.views import review, register, profile
+from users.views import review, register, profile, user_logout
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -34,7 +34,7 @@ urlpatterns = [
     path('booking_succeed/', views.booking_succeed, name="booking_succeed"),
     path('registration/',register, name='registration'),
     path('login/',auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/',auth_views.LogoutView.as_view(next_page='index'), name='logout'),
+    path('logout/', user_logout, name='logout'),
     path('accounts/profile/', profile, name='profile'),
 
 

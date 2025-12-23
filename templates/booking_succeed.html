@@ -19,6 +19,12 @@
             <p class="success-text">Total price: ${{ total_price }}</p>
         {% endif %}
     </div>
+
+    <div class="button-row">
+        <a href="{% url 'index' %}" class="btn btn-main">Main Page</a>
+        <a href="{% url 'profile' %}" class="btn btn-profile">My Profile</a>
+    </div>
+
 </div>
 </body>
 </html>
