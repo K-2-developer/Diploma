@@ -1,7 +1,10 @@
 from urllib import request
+
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import ReviewForm, RegistrationForm
-from .models import Hotel, Review
+from .models import Hotel
+from Hotel.models import Booking
 
 
 def review(request,hotel_id):
@@ -32,3 +35,9 @@ def register(request):
     else:
         form = RegistrationForm()
     return render(request, 'registration.html', {'form': form})
+
+@login_required
+def profile(request):
+    user = request.user
+    booking = Booking.objects.filter(user_id=user)
+    return render(request, 'profile.html', {'user': user, 'booking': booking})
