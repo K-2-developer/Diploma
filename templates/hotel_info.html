@@ -53,11 +53,22 @@
     </div>
 
 
+
     <h3 class="subtitle">Reviews:</h3>
+    {% if request.user.is_authenticated %}
+    <form method="post" action="{% url 'review' hotel.hotel_id %}" class="review-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit review</button>
+    </form>
+    {% else %}
+    <p class="empty">Login to leave a review</p>
+    {% endif %}
+
     <div class="reviews">
         {% for review in reviews %}
         <div class="review-card">
-            <p class="review-user"><strong>{{ review.user.username }}</strong> — оценка: {{ review.rating }}/5</p>
+            <p class="review-user"><strong>{{ review.user.username }}</strong> — rating: {{ review.rating }}/10</p>
             <p class="review-comment">{{ review.comment }}</p>
         </div>
         {% empty %}

@@ -43,6 +43,7 @@ def profile(request):
     booking = Booking.objects.filter(user_id=user, deleted = False)
     return render(request, 'profile.html', {'user': user, 'booking': booking})
 
+@login_required()
 def user_logout(request):
     logout(request)
     return redirect('index')

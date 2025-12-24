@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 from Hotel.models import Hotel
@@ -8,7 +9,7 @@ class Review(models.Model):
     review_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField()
-    rating = models.IntegerField()
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='reviews', null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

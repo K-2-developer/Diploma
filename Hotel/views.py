@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from rest_framework import serializers
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from Hotel.forms import BookingForm
 from Hotel.models import Hotel, Room, Booking
@@ -8,6 +7,7 @@ from Hotel.serializers import HotelSerializer, RoomSerializer, BookingSerializer
 from users.models import Review
 from django.contrib import messages
 from datetime import datetime
+from users.forms import ReviewForm
 
 
 def index(request):
@@ -19,7 +19,12 @@ def hotel_info(request, hotel_id):
     hotel = get_object_or_404(Hotel, pk=hotel_id)
     rooms = Room.objects.filter(hotel_id=hotel)
     reviews = Review.objects.filter(hotel=hotel)
-    return render(request, 'hotel_info.html', {'hotel': hotel, 'rooms': rooms})
+    return render(request, 'hotel_info.html', {
+        'hotel': hotel,
+        'rooms': rooms,
+        'reviews': reviews,
+        'form': ReviewForm()
+    })
 
 
 @login_required
