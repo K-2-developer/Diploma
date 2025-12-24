@@ -6,14 +6,13 @@ from .models import Booking
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
-        fields = ['check_in', 'check_out']
-
+        fields = ['check_in', 'check_out',]
 
     def clean(self):
         cleaned_data = super().clean()
         check_in = cleaned_data.get('check_in')
         check_out = cleaned_data.get('check_out')
-        room = cleaned_data.get('room_id')
+        room = self.room
         if check_in and check_out:  # Checking for not None
             if check_in > check_out:
                 raise ValidationError('Something went wrong.')

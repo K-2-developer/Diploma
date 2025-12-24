@@ -7,7 +7,7 @@ from .models import Hotel
 from Hotel.models import Booking
 from django.contrib.auth import logout
 
-
+@login_required
 def review(request,hotel_id):
     hotel = get_object_or_404(Hotel, hotel_id=hotel_id)
     if request.method == 'POST':

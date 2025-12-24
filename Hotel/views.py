@@ -32,6 +32,7 @@ def booking(request, room_id):
     room = get_object_or_404(Room, pk=room_id)
     if request.method == 'POST':
         form = BookingForm(request.POST)
+        form.room = room
         if form.is_valid():
             booking = form.save(commit=False)  # In order to fill up fields before saving
             booking.user_id = request.user

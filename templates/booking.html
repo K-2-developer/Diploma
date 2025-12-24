@@ -12,9 +12,22 @@
 
     <form method="post" class="form-box">
         {% csrf_token %}
-        {{ form.room_id.label_tag }} {{ form.room_id }}
+
+        {% if form.non_field_errors %}
+            <div style="color:red;">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
         {{ form.check_in.label_tag }} {{ form.check_in }}
+        {% for error in form.check_in.errors %}
+            <div style="color:red;">{{ error }}</div>
+        {% endfor %}
+
         {{ form.check_out.label_tag }} {{ form.check_out }}
+        {% for error in form.check_out.errors %}
+            <div style="color:red;">{{ error }}</div>
+        {% endfor %}
 
         <button type="submit" class="btn btn-primary">Continue booking</button>
     </form>
