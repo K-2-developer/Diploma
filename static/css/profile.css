@@ -76,3 +76,18 @@ body {
 .btn-danger:hover {
     background-color: #b52a35;
 }
+.btn-cancel {
+    display: inline-block;
+    background-color: #e53935;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background-color: #c62828;
+}

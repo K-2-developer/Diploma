@@ -34,6 +34,7 @@
                     <p><strong>Check-in:</strong> {{ booking.check_in }}</p>
                     <p><strong>Check-out:</strong> {{ booking.check_out }}</p>
                     <p><strong>Price per night:</strong> ${{ booking.room_id.room_price }}</p>
+                    <a href="{% url 'cancel_booking' booking.booking_id %}" class="btn-cancel">Cancel</a>
                 </div>
             {% endfor %}
         {% else %}

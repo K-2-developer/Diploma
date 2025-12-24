@@ -36,6 +36,7 @@ urlpatterns = [
     path('login/',auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', user_logout, name='logout'),
     path('accounts/profile/', profile, name='profile'),
+    path('cancel_booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
 
 
 

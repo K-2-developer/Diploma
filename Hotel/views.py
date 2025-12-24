@@ -1,14 +1,13 @@
-from django import http
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework import serializers
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-
 from Hotel.forms import BookingForm
 from Hotel.models import Hotel, Room, Booking
 from Hotel.serializers import HotelSerializer, RoomSerializer, BookingSerializer
 from users.models import Review
 from django.contrib import messages
+from datetime import datetime
 
 
 def index(request):
@@ -37,11 +36,17 @@ def booking(request, room_id):
             total_price = days * room.room_price
             messages.success(request, f'Total price: ${total_price}')
             return redirect('booking_succeed')
-
     else:
         form = BookingForm()
     return render(request, 'booking.html', {'form': form, 'room': room})
 
+@login_required
+def cancel_booking(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id, user_id = request.user)
+    booking.deleted = True
+    booking.deleted_at = datetime.now()
+    booking.save()
+    return redirect('profile')
 
 @login_required
 def booking_succeed(request):
