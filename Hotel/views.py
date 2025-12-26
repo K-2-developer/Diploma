@@ -1,9 +1,14 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from Hotel.forms import BookingForm
 from Hotel.models import Hotel, Room, Booking
-from Hotel.serializers import HotelSerializer, RoomSerializer, BookingSerializer
+from Hotel.serializers import HotelSerializer, RoomSerializer, BookingSerializer, AdminStatisticSerializer, \
+    HotelPopularitySerializer
 from users.models import Review
 from django.contrib import messages
 from datetime import datetime
@@ -87,3 +92,21 @@ class BookingAPIView(ListAPIView):
 class BookingInfoAPIView(RetrieveAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
+
+
+class AdminStatisticAPIView(APIView):
+    permission_classes = [IsAdminUser]
+    def get(self,request):
+        bookings = Booking.objects.count()
+        canceled_bookings = Booking.objects.filter(deleted=True).count()
+        active_bookings = Booking.objects.filter(deleted=False).count()
+        hotels = Hotel.objects.annotate(booking_quantity=Count('room__booking')).order_by('-booking_quantity')
+        serialized_hotels = HotelPopularitySerializer(hotels, many=True).data
+        data = {'bookings': bookings,
+                'canceled_bookings': canceled_bookings,
+                'active_bookings': active_bookings,
+                'hotels': serialized_hotels,}
+        serializer = AdminStatisticSerializer(data)
+        return Response(serializer.data)
+
+

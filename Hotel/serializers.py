@@ -18,3 +18,16 @@ class BookingSerializer(serializers.ModelSerializer):
         fields = ('booking_id', 'user_id', 'room_id', 'check_in', 'check_out')
 
 
+class HotelPopularitySerializer(serializers.Serializer):
+    hotel_id = serializers.IntegerField()
+    hotel_name = serializers.CharField()
+    booking_quantity = serializers.IntegerField()
+
+
+class AdminStatisticSerializer(serializers.Serializer):
+    bookings = serializers.IntegerField()
+    canceled_bookings = serializers.IntegerField()
+    active_bookings = serializers.IntegerField()
+    hotels = HotelPopularitySerializer(many=True)
+
+
