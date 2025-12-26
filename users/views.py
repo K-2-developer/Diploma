@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from rest_framework.generics import RetrieveAPIView
-from .forms import ReviewForm, RegistrationForm
+from .forms import ReviewForm, RegistrationForm, ProfileUpdateForm
 from .models import Hotel
 from Hotel.models import Booking
 from django.contrib.auth import logout
@@ -47,13 +47,27 @@ def profile(request):
     booking = Booking.objects.filter(user_id=user, deleted = False)
     return render(request, 'profile.html', {'user': user, 'booking': booking})
 
-@login_required()
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('index')
+
+
+@login_required
+def profile_update(request):
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST,instance=request.user)
+        if form.is_valid():
+            form.save()
+        return redirect('profile')
+    else:
+        form = ProfileUpdateForm(instance=request.user)
+    return render(request, 'profile_update.html', {'form': form})
+
 
 
 class UserAPIView(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = 'id'
+
