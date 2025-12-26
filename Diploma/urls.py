@@ -22,7 +22,7 @@ from django.contrib import admin
 from django.urls import path
 from Hotel import views
 from Hotel.views import HotelAPIView, HotelInfoAPIView, RoomAPIView, RoomInfoAPIView, BookingAPIView, BookingInfoAPIView
-from users.views import review, register, profile, user_logout
+from users.views import review, register, profile, user_logout, UserAPIView
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -49,6 +49,7 @@ urlpatterns = [
     path('api/v1/rooms/<int:pk>', RoomInfoAPIView.as_view()),
     path('api/v1/bookings/', BookingAPIView.as_view()),
     path('api/v1/bookings/<int:pk>', BookingInfoAPIView.as_view()),
+    path('api/v1/user/<int:id>/', UserAPIView.as_view()),
 ]
 
 if settings.DEBUG:

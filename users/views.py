@@ -1,11 +1,15 @@
-from urllib import request
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.models import User
+from rest_framework.generics import RetrieveAPIView
 from .forms import ReviewForm, RegistrationForm
 from .models import Hotel
 from Hotel.models import Booking
 from django.contrib.auth import logout
+from .serializers import UserSerializer
+
+
 
 @login_required
 def review(request,hotel_id):
@@ -47,3 +51,9 @@ def profile(request):
 def user_logout(request):
     logout(request)
     return redirect('index')
+
+
+class UserAPIView(RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'id'

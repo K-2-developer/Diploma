@@ -18,7 +18,7 @@ class BookingForm(forms.ModelForm):
                 raise ValidationError('Something went wrong.')
             elif check_in == check_out:
                 raise ValidationError('U cant book a room for less than 2 days.')
-        bookings = Booking.objects.filter(room_id=room, check_in__lt=check_out, check_out__gt=check_in)
+        bookings = Booking.objects.filter(room_id=room, check_in__lt=check_out, check_out__gt=check_in, deleted=False)
         if bookings.exists():
             raise ValidationError('For these days room is already booked. Please choose another room or date.')
         return cleaned_data
