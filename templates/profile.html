@@ -18,27 +18,23 @@
     </div>
 
     <div class="card">
-    <h3 class="section-title">User Information</h3>
-    <p><strong>Username:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-
-    <div class="profile-actions">
-        <a href="{% url 'profile_update' %}" class="btn btn-primary">Edit Profile</a>
+        <h3 class="section-title">User Information</h3>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <div class="profile-actions"> <a href="{% url 'profile_update' %}" class="btn btn-primary">Update Profile</a> </div>
     </div>
-</div>
 
     <div class="card">
         <h3 class="section-title">My Bookings</h3>
 
-        {% if booking %}
-            {% for booking in booking %}
+        {% if bookings %}
+            {% for booking in bookings %}
                 <div class="sub-card">
                     <p><strong>Hotel:</strong> {{ booking.room_id.hotel_id.hotel_name }}</p>
                     <p><strong>Room:</strong> {{ booking.room_id.type }}</p>
                     <p><strong>Check-in:</strong> {{ booking.check_in }}</p>
                     <p><strong>Check-out:</strong> {{ booking.check_out }}</p>
                     <p><strong>Price per night:</strong> ${{ booking.room_id.room_price }}</p>
-                    <a href="{% url 'cancel_booking' booking.booking_id %}" class="btn-cancel">Cancel</a>
                 </div>
             {% endfor %}
         {% else %}
@@ -47,4 +43,3 @@
     </div>
 
 </div>
-
