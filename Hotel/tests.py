@@ -1,5 +1,6 @@
 from django.test import TestCase
 from .models import Hotel, HotelPhoto, Room, RoomPhoto, Booking
+from django.contrib.auth.models import User
 
 
 class HotelModelTest(TestCase):
@@ -233,7 +234,7 @@ class BookingModelTest(TestCase):
     '''A class to test CRUD operations with bookings'''
 
     def setUp(self):
-        '''Create a hotel and room for testing CRUD operations with room photo'''
+        '''Create  hotel,room and user for testing CRUD operations with bookings'''
         self.hotel = Hotel.objects.create(
             hotel_name="Test Hotel",
             hotel_location="Minsk",
@@ -246,53 +247,58 @@ class BookingModelTest(TestCase):
             room_price=50,
             available=True
         )
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='12345'
+        )
 
     def test_create_booking(self):
-        '''Test for creating a booking'''
+        '''Test for Creating a booking'''
         booking = Booking.objects.create(
-            room=self.room,
-            customer_name="John Doe",
+            room_id=self.room,
+            user_id=self.user,
             check_in="2026-01-10",
             check_out="2026-01-15"
         )
         self.assertEqual(Booking.objects.count(), 1)
-        self.assertEqual(booking.room, self.room)
-        self.assertEqual(booking.customer_name, "John Doe")
+        self.assertEqual(booking.room_id, self.room)
+        self.assertEqual(booking.user_id, self.user)
 
     def test_read_booking(self):
-        '''Test for reading a booking'''
+        '''Test for Reading a booking'''
         booking = Booking.objects.create(
-            room=self.room,
-            customer_name="Jane Doe",
+            room_id=self.room,
+            user_id=self.user,
             check_in="2026-02-01",
             check_out="2026-02-05"
         )
         found = Booking.objects.get(pk=booking.pk)
-        self.assertEqual(found.customer_name, "Jane Doe")
-        self.assertEqual(found.room, self.room)
+        self.assertEqual(found.user_id, self.user)
+        self.assertEqual(found.room_id, self.room)
 
     def test_update_booking(self):
-        '''Test for updating a booking'''
+        '''Test for Updating a booking'''
         booking = Booking.objects.create(
-            room=self.room,
-            customer_name="Alex",
+            room_id=self.room,
+            user_id=self.user,
             check_in="2026-03-01",
             check_out="2026-03-10"
         )
-        booking.customer_name = "Alex Updated"
+        booking.check_out = "2026-03-15"
         booking.save()
         updated = Booking.objects.get(pk=booking.pk)
-        self.assertEqual(updated.customer_name, "Alex Updated")
+        self.assertEqual(updated.check_out.strftime("%Y-%m-%d"), "2026-03-15")
 
     def test_delete_booking(self):
-        '''Test for deleting a booking'''
+        '''Test for deleting  a booking'''
         booking = Booking.objects.create(
-            room=self.room,
-            customer_name="Delete Me",
+            room_id=self.room,
+            user_id=self.user,
             check_in="2026-04-01",
             check_out="2026-04-05"
         )
         booking_id = booking.pk
         booking.delete()
         self.assertFalse(Booking.objects.filter(pk=booking_id).exists())
+
 
