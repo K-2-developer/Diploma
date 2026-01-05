@@ -68,30 +68,42 @@ class HotelPhotoModelTest(TestCase):
 
     def test_hotel_photo(self):
         '''Test for Creating photo of hotel'''
-        test_photo = HotelPhoto.objects.create(hotel_id=self.hotel)
+        photo = HotelPhoto.objects.create(
+            hotel_id=self.hotel,
+            photo="old_photo.jpg"
+        )
         self.assertEqual(HotelPhoto.objects.count(), 1)
-        self.assertEqual(test_photo.hotel_id.hotel_name, "Test Hotel")
+        self.assertEqual(photo.photo, "old_photo.jpg")
 
 
     def test_read_hotel_photo(self):
         '''Test for Reading information about hotel photo'''
-        photo = HotelPhoto.objects.create(hotel_id=self.hotel)
+        photo = HotelPhoto.objects.create(
+            hotel_id=self.hotel,
+            photo="read_photo.jpg"
+        )
         found = HotelPhoto.objects.get(photo_id=photo.photo_id)
-        self.assertEqual(found.hotel_id.hotel_name, "Test Hotel")
+        self.assertEqual(found.photo, "read_photo.jpg")
 
 
     def test_update_hotel_photo(self):
         '''Test for Updating hotel photo'''
-        photo = HotelPhoto.objects.create(hotel_id=self.hotel)
-        self.hotel.hotel_description = "Updated Description"
-        self.hotel.save()
-        updated = Hotel.objects.get(hotel_id=self.hotel.hotel_id)
-        self.assertEqual(updated.hotel_description, "Updated Description")
+        photo = HotelPhoto.objects.create(
+            hotel_id=self.hotel,
+            photo="old_photo.jpg"
+        )
+        photo.photo = "new_photo.jpg"
+        photo.save()
+        updated = HotelPhoto.objects.get(photo_id=photo.photo_id)
+        self.assertEqual(updated.photo, "new_photo.jpg")
 
 
     def test_delete_hotel_photo(self):
         '''Test for Deleting hotel photo'''
-        photo = HotelPhoto.objects.create(hotel_id=self.hotel)
+        photo = HotelPhoto.objects.create(
+            hotel_id=self.hotel,
+            photo="delete_photo.jpg"
+        )
         photo_id = photo.photo_id
         photo.delete()
         self.assertFalse(HotelPhoto.objects.filter(photo_id=photo_id).exists())
@@ -101,7 +113,7 @@ class RoomModelTest(TestCase):
     '''A class to test CRUD operations with rooms'''
 
     def setUp(self):
-        '''A func to create an abstract room for testing CRUD operations'''
+        '''A func to create an abstract hotel for testing CRUD operations'''
         self.hotel = Hotel.objects.create(
             hotel_name="Test Hotel",
             hotel_location="Minsk",
@@ -161,4 +173,18 @@ class RoomModelTest(TestCase):
         room_id = room.room_id
         room.delete()
         self.assertFalse(Room.objects.filter(room_id=room_id).exists())
+
+
+class RoomPhotoModelTest(TestCase):
+    '''A class to test CRUD operations with room photos'''
+
+    def setUp(self):
+        '''A func to create an abstract hotel for testing CRUD operations with room photo'''
+        self.hotel = Hotel.objects.create(
+            hotel_name="Test Hotel",
+            hotel_location="Minsk",
+            hotel_description="Test Description",
+            hotel_rating=5
+        )
+
 
