@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Hotel, HotelPhoto, Room, RoomPhoto
+from .models import Hotel, HotelPhoto, Room, RoomPhoto, Booking
 
 
 class HotelModelTest(TestCase):
@@ -227,3 +227,72 @@ class RoomPhotoModelTest(TestCase):
         photo_id = photo.photo_id
         photo.delete()
         self.assertFalse(RoomPhoto.objects.filter(photo_id=photo_id).exists())
+
+
+class BookingModelTest(TestCase):
+    '''A class to test CRUD operations with bookings'''
+
+    def setUp(self):
+        '''Create a hotel and room for testing CRUD operations with room photo'''
+        self.hotel = Hotel.objects.create(
+            hotel_name="Test Hotel",
+            hotel_location="Minsk",
+            hotel_description="Test Description",
+            hotel_rating=5
+        )
+        self.room = Room.objects.create(
+            hotel_id=self.hotel,
+            type="standard",
+            room_price=50,
+            available=True
+        )
+
+    def test_create_booking(self):
+        '''Test for creating a booking'''
+        booking = Booking.objects.create(
+            room=self.room,
+            customer_name="John Doe",
+            check_in="2026-01-10",
+            check_out="2026-01-15"
+        )
+        self.assertEqual(Booking.objects.count(), 1)
+        self.assertEqual(booking.room, self.room)
+        self.assertEqual(booking.customer_name, "John Doe")
+
+    def test_read_booking(self):
+        '''Test for reading a booking'''
+        booking = Booking.objects.create(
+            room=self.room,
+            customer_name="Jane Doe",
+            check_in="2026-02-01",
+            check_out="2026-02-05"
+        )
+        found = Booking.objects.get(pk=booking.pk)
+        self.assertEqual(found.customer_name, "Jane Doe")
+        self.assertEqual(found.room, self.room)
+
+    def test_update_booking(self):
+        '''Test for updating a booking'''
+        booking = Booking.objects.create(
+            room=self.room,
+            customer_name="Alex",
+            check_in="2026-03-01",
+            check_out="2026-03-10"
+        )
+        booking.customer_name = "Alex Updated"
+        booking.save()
+        updated = Booking.objects.get(pk=booking.pk)
+        self.assertEqual(updated.customer_name, "Alex Updated")
+
+    def test_delete_booking(self):
+        '''Test for deleting a booking'''
+        booking = Booking.objects.create(
+            room=self.room,
+            customer_name="Delete Me",
+            check_in="2026-04-01",
+            check_out="2026-04-05"
+        )
+        booking_id = booking.pk
+        booking.delete()
+        self.assertFalse(Booking.objects.filter(pk=booking_id).exists())
+
