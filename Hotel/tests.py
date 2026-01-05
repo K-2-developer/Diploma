@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Hotel, HotelPhoto
+from .models import Hotel, HotelPhoto, Room, RoomPhoto
 
 
 class HotelModelTest(TestCase):
@@ -96,4 +96,69 @@ class HotelPhotoModelTest(TestCase):
         photo.delete()
         self.assertFalse(HotelPhoto.objects.filter(photo_id=photo_id).exists())
 
+
+class RoomModelTest(TestCase):
+    '''A class to test CRUD operations with rooms'''
+
+    def setUp(self):
+        '''A func to create an abstract room for testing CRUD operations'''
+        self.hotel = Hotel.objects.create(
+            hotel_name="Test Hotel",
+            hotel_location="Minsk",
+            hotel_description="Test Description",
+            hotel_rating=5
+        )
+
+    def test_create_room(self):
+        '''Test for creating a room'''
+        room = Room.objects.create(
+            hotel_id=self.hotel,
+            type="deluxe",
+            room_price=100,
+            available=True
+        )
+        self.assertEqual(Room.objects.count(), 1)
+        self.assertEqual(room.type, "deluxe")
+        self.assertTrue(room.available)
+
+
+    def test_read_room(self):
+        '''Test for reading room information'''
+        room = Room.objects.create(
+            hotel_id=self.hotel,
+            type="standard",
+            room_price=50,
+            available=False
+        )
+        found = Room.objects.get(room_id=room.room_id)
+        self.assertEqual(found.type, "standard")
+        self.assertEqual(found.room_price, 50)
+        self.assertFalse(found.available)
+
+    def test_update_room(self):
+        '''Test for updating room information'''
+        room = Room.objects.create(
+            hotel_id=self.hotel,
+            type="standard",
+            room_price=50,
+            available=True
+        )
+        room.room_price = 80
+        room.available = False
+        room.save()
+        updated = Room.objects.get(room_id=room.room_id)
+        self.assertEqual(updated.room_price, 80)
+        self.assertFalse(updated.available)
+
+    def test_delete_room(self):
+        '''Test for deleting room'''
+        room = Room.objects.create(
+            hotel_id=self.hotel,
+            type="standard",
+            room_price=50,
+            available=True
+        )
+        room_id = room.room_id
+        room.delete()
+        self.assertFalse(Room.objects.filter(room_id=room_id).exists())
 
