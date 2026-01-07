@@ -27,4 +27,15 @@ class IntegrationTest(TestCase):
         self.assertEqual(str(booking.check_in), "2026-01-10")
         self.assertEqual(str(booking.check_out), "2026-01-15")
 
+    def test_cancel_booking(self):
+        '''Testing canceling booking'''
+        self.client.login(username='test', password='12345')
+        booking = Booking.objects.create(room_id=self.room, user_id=self.user,
+                                         check_in='2026-01-10', check_out='2026-01-15')
+        response = self.client.get(f"/cancel_booking/{booking.booking_id}/")
+        self.assertEqual(response.status_code, 302)
+        booking.refresh_from_db()
+        self.assertTrue(booking.deleted)
+        self.assertIsNotNone(booking.deleted_at)
+
     
