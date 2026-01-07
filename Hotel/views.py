@@ -49,6 +49,7 @@ def booking(request, room_id):
             return redirect('booking_succeed')
     else:
         form = BookingForm()
+        form.room = room
     return render(request, 'booking.html', {'form': form, 'room': room})
 
 @login_required
