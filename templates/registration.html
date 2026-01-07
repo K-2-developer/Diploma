@@ -1,15 +1,25 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Registration</title>
+    <title>Register</title>
+    {% load static %}
+<link rel="stylesheet" href="{% static 'css/registration.css' %}">
 </head>
 <body>
-    <h2>Registration</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
+    <div class="container">
+        <h2 class="title">Register</h2>
+        <form method="post" class="form-box">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Sign up</button>
+        </form>
+
+        <div class="extra">
+            <p>Already have an account?</p>
+            <a href="{% url 'login' %}" class="btn btn-secondary">Log in</a>
+        </div>
+    </div>
 </body>
 </html>
