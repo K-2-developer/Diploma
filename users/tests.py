@@ -52,3 +52,16 @@ class IntegrationTest(TestCase):
         response = self.client.get("/accounts/profile/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Test Hotel")
+
+    def test_review(self):
+        '''Testing review functionality'''
+        self.client.login(username='test', password='12345')
+        response = self.client.post(
+            f"/hotel/{self.hotel.hotel_id}/review",
+            {"rating": 9, "comment": "Test!"
+             })
+        self.assertEqual(response.status_code, 302)
+        review = Review.objects.get(hotel=self.hotel, user=self.user)
+        self.assertEqual(review.comment, "Test!")
+        self.assertEqual(review.rating, 9)
+
