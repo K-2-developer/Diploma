@@ -35,6 +35,10 @@
                     <p><strong>Check-in:</strong> {{ booking.check_in }}</p>
                     <p><strong>Check-out:</strong> {{ booking.check_out }}</p>
                     <p><strong>Price per night:</strong> ${{ booking.room_id.room_price }}</p>
+                <form method="post" action="{% url 'cancel_booking' booking.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Cancel Booking</button>
+                </form>
                 </div>
             {% endfor %}
         {% else %}

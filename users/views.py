@@ -44,8 +44,8 @@ def register(request):
 @login_required
 def profile(request):
     user = request.user
-    booking = Booking.objects.filter(user_id=user, deleted = False)
-    return render(request, 'profile.html', {'user': user, 'booking': booking})
+    bookings = Booking.objects.filter(user_id=user, deleted = False)
+    return render(request, 'profile.html', {'user': user, 'bookings': bookings})
 
 @login_required
 def user_logout(request):
