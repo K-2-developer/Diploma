@@ -7,8 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from Hotel.forms import BookingForm
 from Hotel.models import Hotel, Room, Booking
-from Hotel.serializers import HotelSerializer, RoomSerializer, BookingSerializer, AdminStatisticSerializer, \
-    HotelPopularitySerializer
+from Hotel.serializers import HotelSerializer, RoomSerializer, BookingSerializer, AdminStatisticSerializer, HotelPopularitySerializer
 from users.models import Review
 from django.contrib import messages
 from datetime import datetime
@@ -16,11 +15,16 @@ from users.forms import ReviewForm
 
 
 def index(request):
+    '''Renders the page with all hotels'''
     hotels = Hotel.objects.all()
     return render(request, 'index.html', {'hotels': hotels})
 
 
 def hotel_info(request, hotel_id):
+    '''
+    Renders the page with detailed information about the specific hotel.
+    Also renders rooms for the hotel and reviews for it
+    '''
     hotel = get_object_or_404(Hotel, pk=hotel_id)
     rooms = Room.objects.filter(hotel_id=hotel)
     reviews = Review.objects.filter(hotel=hotel)
@@ -34,6 +38,7 @@ def hotel_info(request, hotel_id):
 
 @login_required
 def booking(request, room_id):
+    '''A func for booking the specific room.Calculates total price for the room'''
     room = get_object_or_404(Room, pk=room_id)
     if request.method == 'POST':
         form = BookingForm(request.POST)
@@ -54,6 +59,7 @@ def booking(request, room_id):
 
 @login_required
 def cancel_booking(request, booking_id):
+    '''A func for canceling booking of the specific room'''
     booking = get_object_or_404(Booking, pk=booking_id, user_id = request.user)
     booking.deleted = True
     booking.deleted_at = datetime.now()
@@ -62,40 +68,69 @@ def cancel_booking(request, booking_id):
 
 @login_required
 def booking_succeed(request):
+    '''Renders the page confirming the successful booking and shows calculated price for the days '''
     return render(request, 'booking_succeed.html')
 
 
 class HotelAPIView(ListAPIView):
+    '''API for showing hotel list. Based on the HotelSerializer.'''
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
 
 
 class HotelInfoAPIView(RetrieveAPIView):
+    '''
+    API for showing information about the specific hotel.
+
+    Uses RetrieveAPIView in order to get the hotel information by its id.
+    Based on the HotelSerializer.
+    '''
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
 
 
 class RoomAPIView(ListAPIView):
+    '''API for showing room list. Based on the RoomSerializer.'''
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
 
 class RoomInfoAPIView(RetrieveAPIView):
+    '''
+    API for showing information about the specific room.
+
+    Uses RetrieveAPIView in order to get the room information by its id.
+    Based on the RoomSerializer.
+    '''
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
 
 class BookingAPIView(ListAPIView):
+    '''API for showing booking list.'''
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
 
 class BookingInfoAPIView(RetrieveAPIView):
+    '''
+    API for showing information about the specific booking.
+
+    Uses RetrieveAPIView in order to get the booking information by its id.
+    Based on the BookingSerializer.
+    '''
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
 
 class AdminStatisticAPIView(APIView):
+    '''
+    API for displaying aggregated data about bookings and hotel statistics.
+
+    Accessible only to admin users.
+    Counts all bookings. Counts hotel statistic using HotelPopularitySerializer.
+    Response data serialized with AdminStatisticSerializer.
+    '''
     permission_classes = [IsAdminUser]
     def get(self,request):
         bookings = Booking.objects.count()

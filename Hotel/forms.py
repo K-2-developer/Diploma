@@ -4,11 +4,16 @@ from .models import Booking
 
 
 class BookingForm(forms.ModelForm):
+    '''Form for creating booking. Based on the booking model.'''
     class Meta:
         model = Booking
         fields = ['check_in', 'check_out',]
 
     def clean(self):
+        '''
+        Standart Django method for validation data.
+        Performs validation for dates.
+        '''
         cleaned_data = super().clean()
         check_in = cleaned_data.get('check_in')
         check_out = cleaned_data.get('check_out')
